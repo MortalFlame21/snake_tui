@@ -1,18 +1,31 @@
+#include <iostream>
+#include <string>
+
 #include <ftxui/screen/screen.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/component/component.hpp>
+#include <ftxui/component/screen_interactive.hpp>
 
-ftxui::Element cell(const char* c) { return ftxui::text(c) | ftxui::border; }
+#include "Game.h"
+
+ftxui::Element cell(std::string s) { return ftxui::text(s) | ftxui::border; }
 
 int main() {
-    auto screen{ftxui::Screen::Create(
-        ftxui::Dimension::Full(),
-        ftxui::Dimension::Fixed(10)
-    )};
+    Game game{};
 
-    auto mid{cell("<GAME>")};
-    auto document{ftxui::gridbox({{cell("Snake TUI"), cell("<SCORE>")}, {mid}, {}})};
+    auto screen{ftxui::ScreenInteractive::TerminalOutput()};
+    auto gridbox{ftxui::gridbox({
+        {cell("Snake TUI"), cell(std::to_string(game.score()))},
+        {cell("<GRID>")}
+    })};
+    auto renderer{ftxui::Renderer([&]() { return gridbox; })};
+    auto component{ftxui::CatchEvent(renderer, [&](ftxui::Event event) {
+        if (event == ftxui::Event::Character('q')) {
+            screen.ExitLoopClosure()();
+            return true;
+        }
+        return false;
+    })};
 
-    ftxui::Render(screen, document);
-    screen.Print();
+    screen.Loop(component);
 }
