@@ -7,10 +7,10 @@ class Grid {
 public:
     Grid();
 
-    size_t rows() const;
-    size_t cols() const;
+    constexpr size_t rows() const { return rows_; }
+    constexpr size_t cols() const { return cols_; }
     size_t tiles() const;
 private:
-    size_t rows_{20};
-    size_t cols_{20};
+    const size_t rows_{10};
+    const size_t cols_{10};
 };
