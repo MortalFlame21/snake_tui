@@ -6,9 +6,13 @@ set(CMAKE_CXX_STANDARD 20)
 
 # project sources
 include_directories(${CMAKE_SOURCE_DIR}/include)
-add_executable(snake_tui src/main.cpp)
+add_executable(snake_tui
+  src/main.cpp
+  src/Game.cpp
+  src/Grid.cpp
+)
 
-# fxtui stuff
+# ftxui stuff
 FetchContent_Declare(ftxui
   GIT_REPOSITORY https://github.com/ArthurSonzogni/FTXUI
   GIT_TAG v6.1.9
