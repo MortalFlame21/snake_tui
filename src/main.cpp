@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <format>
 
 #include <ftxui/screen/screen.hpp>
 #include <ftxui/dom/elements.hpp>
@@ -14,11 +15,16 @@ int main() {
     Game game{};
 
     auto screen{ftxui::ScreenInteractive::TerminalOutput()};
-    auto gridbox{ftxui::gridbox({
-        {cell("Snake TUI"), cell(std::to_string(game.score()))},
-        {cell("<GRID>")}
-    })};
-    auto renderer{ftxui::Renderer([&]() { return gridbox; })};
+    auto contents{ftxui::vbox({
+        ftxui::hbox({
+            cell("Snake TUI"),
+            ftxui::filler(),
+            cell(std::format("Score: {}", game.score()))
+        }),
+        ftxui::canvas(game.gridToCanvas()) | ftxui::center,
+        ftxui::separatorEmpty()
+    }) | ftxui::hcenter};
+    auto renderer{ftxui::Renderer([&]() { return contents; })};
     auto component{ftxui::CatchEvent(renderer, [&](ftxui::Event event) {
         if (event == ftxui::Event::Character('q')) {
             screen.ExitLoopClosure()();
