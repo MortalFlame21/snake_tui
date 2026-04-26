@@ -21,7 +21,7 @@ int main() {
             ftxui::filler(),
             cell(std::format("Score: {}", game.score()))
         }),
-        ftxui::canvas(game.gridToCanvas()) | ftxui::center,
+        ftxui::canvas(game.toCanvas()) | ftxui::center,
         ftxui::separatorEmpty()
     }) | ftxui::hcenter};
     auto renderer{ftxui::Renderer([&]() { return contents; })};
