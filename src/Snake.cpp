@@ -1,0 +1,34 @@
+#include "Snake.h"
+
+#include <ftxui/dom/canvas.hpp>
+
+#include "Grid.h"
+#include "Game.h"
+
+ftxui::Canvas& Snake::toCanvas(ftxui::Canvas& cva) const {
+    for (auto p : positions_) {
+        // fill square with body
+        for (size_t dy{}; dy < Game::cell_sz; ++dy) {
+            for (size_t dx{}; dx < Game::cell_sz; ++dx) {
+                constexpr auto color{ftxui::Color::Green1};
+                cva.DrawBlock(p.x * Game::cell_sz + dx, p.y * Game::cell_sz + dy, true, color);
+            }
+        }
+    }
+
+    return cva;
+}
+
+Snake::Pos2d Snake::head() const {
+    return positions_.front();
+}
+
+void Snake::grow() {
+    // grow depending on facing direction
+}
+
+bool Snake::outOfBounds(Grid& grid) const {
+    // we are only concerned with the head, the body follows the head
+    auto h{head()};
+    return (h.x < 0 || h.x > grid.rows()) && (h.y < 0 || h.y > grid.cols());
+}
