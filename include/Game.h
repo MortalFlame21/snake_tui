@@ -8,6 +8,8 @@
 
 class Game {
 public:
+    inline static constexpr size_t cell_sz{10};
+
     Game();
 
     int score() const;
