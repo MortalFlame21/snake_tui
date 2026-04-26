@@ -3,14 +3,18 @@
 
 #include <cstdlib>
 
+#include <ftxui/dom/canvas.hpp>
+
 class Grid {
 public:
-    Grid();
+    Grid() = default;
 
-    constexpr size_t rows() const { return rows_; }
-    constexpr size_t cols() const { return cols_; }
-    size_t tiles() const;
+    static constexpr size_t rows() { return rows_; }
+    static constexpr size_t cols() { return cols_; }
+    static constexpr size_t tiles() { return rows_ * cols_; };
+
+    ftxui::Canvas toCanvas(ftxui::Canvas& cva) const;
 private:
-    const size_t rows_{10};
-    const size_t cols_{10};
+    inline static constexpr size_t rows_{10};
+    inline static constexpr size_t cols_{10};
 };
