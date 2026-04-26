@@ -4,6 +4,7 @@
 #include <ftxui/dom/canvas.hpp>
 
 #include "Grid.h"
+#include "Snake.h"
 
 class Game {
 public:
@@ -11,8 +12,9 @@ public:
 
     int score() const;
     bool hasWon() const;
-    ftxui::Canvas gridToCanvas() const;
+    ftxui::Canvas toCanvas() const;
 private:
     Grid grid_{};
+    Snake snake_{};
     int score_{};
 };

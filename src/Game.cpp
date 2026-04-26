@@ -8,7 +8,7 @@ bool Game::hasWon() const { return score_ >= grid_.tiles(); }
 
 int Game::score() const { return score_; }
 
-ftxui::Canvas Game::gridToCanvas() const {
+ftxui::Canvas Game::toCanvas() const {
     // output a 10 x 10 square, or 4 x 2 printed blocks
     constexpr size_t cell_sz{10};
 
