@@ -20,9 +20,11 @@ public:
     ftxui::Canvas& toCanvas(ftxui::Canvas& cva) const;
     Pos2d head() const;
     void grow();
-    // Pos2d turn();
     bool outOfBounds(Grid& grid) const;
+    void move();
 private:
+    void move_part(Pos2d& pos);
+
     // initialise with snake at middle of grid facing north
     std::deque<Pos2d> positions_{{Grid::rows() / 2, Grid::cols() / 2, NORTH}};
     std::deque<Pos2d> turn_positions{};
