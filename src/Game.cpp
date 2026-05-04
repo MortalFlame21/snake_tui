@@ -19,3 +19,9 @@ ftxui::Canvas Game::toCanvas() const {
 
     return cva;
 }
+
+void Game::snake_move() { snake_.move(); }
+
+void Game::snake_turn(Snake::Facing turn) {
+    // implement soon!
+}

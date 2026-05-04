@@ -12,9 +12,12 @@ public:
 
     Game();
 
+    int& score() { return score_; }; // temp
     int score() const;
     bool hasWon() const;
     ftxui::Canvas toCanvas() const;
+    void snake_move();
+    void snake_turn(Snake::Facing turn);
 private:
     Grid grid_{};
     Snake snake_{};
