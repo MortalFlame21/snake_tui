@@ -43,13 +43,13 @@ void Snake::move() {
 void Snake::move_part(Pos2d& pos) {
     switch (pos.facing) {
     case NORTH:
-        pos.x--;
+        pos.y--; break;
     case SOUTH:
-        pos.x++;
+        pos.y++; break;
     case EAST:
-        pos.y++;
+        pos.x++; break;
     case WEST:
-        pos.y--;
+        pos.x--; break;
     default:
         break;
     }
