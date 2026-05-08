@@ -28,10 +28,10 @@ void Snake::grow() {
     // grow depending on facing direction
 }
 
-bool Snake::outOfBounds(Grid& grid) const {
+bool Snake::inGrid(Grid& grid) const {
     // we are only concerned with the head, the body follows the head
     auto h{head()};
-    return (h.x < 0 || h.x > grid.rows()) && (h.y < 0 || h.y > grid.cols());
+    return (0 <= h.x && h.x < grid.rows()) && (0 <= h.y && h.y < grid.cols());
 }
 
 void Snake::move() {
