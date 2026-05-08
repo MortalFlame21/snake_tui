@@ -10,15 +10,18 @@ class Game {
 public:
     inline static constexpr size_t cell_sz{10};
 
-    Game();
+    Game() = default;
 
-    int& score() { return score_; }; // temp
+    void run();
     int score() const;
     bool hasWon() const;
+    bool hasLost() const;
     ftxui::Canvas toCanvas() const;
     void snake_move();
     void snake_turn(Snake::Facing turn);
 private:
+    inline static constexpr size_t FPS{30};
+
     Grid grid_{};
     Snake snake_{};
     int score_{};
