@@ -13,14 +13,17 @@ public:
     Game() = default;
 
     void run();
+private:
+    inline static constexpr size_t FPS{30};
+
     int score() const;
     bool hasWon() const;
     bool hasLost() const;
     ftxui::Canvas toCanvas() const;
     void snake_move();
     void snake_turn(Snake::Facing turn);
-private:
-    inline static constexpr size_t FPS{30};
+    void dramatic_loss(ftxui::Canvas& cva) const;
+
 
     Grid grid_{};
     Snake snake_{};

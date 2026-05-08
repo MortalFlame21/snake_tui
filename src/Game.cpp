@@ -69,11 +69,7 @@ ftxui::Canvas Game::toCanvas() const {
     grid_.toCanvas(cva);
     snake_.toCanvas(cva);
 
-    if (hasLost()) {
-        auto msg{std::format("You lose! Score: {}.", score_)};
-
-        cva.DrawText(cva_w / 2 - msg.length(), cva_h / 2, msg);
-    }
+    if (hasLost()) dramatic_loss(cva);
 
     return cva;
 }
@@ -84,4 +80,10 @@ void Game::snake_move() {
 
 void Game::snake_turn(Snake::Facing turn) {
     // implement soon!
+}
+
+void Game::dramatic_loss(ftxui::Canvas& cva) const {
+    auto msg{std::format("You lose! Score: {}", score_)};
+    for (int i{}; i < cva.height(); ++i)
+        cva.DrawText(cva.width() / 2 - msg.length(), i + 1, msg, ftxui::Color::Red1);
 }
