@@ -28,7 +28,7 @@ void Snake::grow() {
     // grow depending on facing direction
 }
 
-bool Snake::inGrid(Grid& grid) const {
+bool Snake::inGrid(const Grid& grid) const {
     // we are only concerned with the head, the body follows the head
     auto h{head()};
     return (0 <= h.x && h.x < grid.rows()) && (0 <= h.y && h.y < grid.cols());

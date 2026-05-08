@@ -20,7 +20,7 @@ public:
     ftxui::Canvas& toCanvas(ftxui::Canvas& cva) const;
     Pos2d head() const;
     void grow();
-    bool inGrid(Grid& grid) const;
+    bool inGrid(const Grid& grid) const;
     void move();
 private:
     void move_part(Pos2d& pos);
