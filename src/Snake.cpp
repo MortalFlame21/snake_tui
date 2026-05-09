@@ -20,24 +20,24 @@ ftxui::Canvas& Snake::toCanvas(ftxui::Canvas& cva) const {
     return cva;
 }
 
-Snake::Pos2d Snake::head() const {
-    return positions_.front();
-}
+Snake::Pos2d Snake::head() const { return positions_.front(); }
+
+Snake::Pos2d& Snake::head() { return positions_.front(); }
 
 void Snake::grow() {
     // grow depending on facing direction
 }
 
-bool Snake::outOfBounds(Grid& grid) const {
+bool Snake::inGrid(const Grid& grid) const {
     // we are only concerned with the head, the body follows the head
     auto h{head()};
-    return (h.x < 0 || h.x > grid.rows()) && (h.y < 0 || h.y > grid.cols());
+    return (0 <= h.x && h.x < grid.rows()) && (0 <= h.y && h.y < grid.cols());
 }
 
 void Snake::move() {
-    for (auto& p : positions_) {
-        move_part(p);
-    }
+    // to create the illusion of movement simply move head and tail
+    move_part(head());
+    // move_part(tail());
 }
 
 void Snake::move_part(Pos2d& pos) {
@@ -54,3 +54,5 @@ void Snake::move_part(Pos2d& pos) {
         break;
     }
 }
+
+void Snake::turn(const Facing turn) { head().facing = turn; }

@@ -10,8 +10,8 @@ class Snake {
 public:
     enum Facing { NORTH, SOUTH, EAST, WEST };
     struct Pos2d {
-        size_t x{};
-        size_t y{};
+        int x{};
+        int y{};
         Facing facing;
     };
 
@@ -20,12 +20,16 @@ public:
     ftxui::Canvas& toCanvas(ftxui::Canvas& cva) const;
     Pos2d head() const;
     void grow();
-    bool outOfBounds(Grid& grid) const;
+    bool inGrid(const Grid& grid) const;
     void move();
+    void turn(Facing turn);
 private:
+    Pos2d& head();
     void move_part(Pos2d& pos);
 
     // initialise with snake at middle of grid facing north
     std::deque<Pos2d> positions_{{Grid::rows() / 2, Grid::cols() / 2, NORTH}};
+    // the rest of the body follows the head turns positions,
+    // basically a stack of all previous head positions.
     std::deque<Pos2d> turn_positions{};
 };
