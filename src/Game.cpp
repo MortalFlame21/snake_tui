@@ -17,42 +17,53 @@
 ftxui::Element cell(std::string s) { return ftxui::text(s) | ftxui::border; }
 
 void Game::run() {
-    auto screen{ftxui::ScreenInteractive::TerminalOutput()};
+    using namespace ftxui;
 
-    auto renderer{ftxui::Renderer([&]() {
-        return ftxui::vbox({
-            ftxui::hbox({
+    auto screen{ScreenInteractive::TerminalOutput()};
+
+    auto renderer{Renderer([&]() {
+        return vbox({
+            hbox({
                 cell("Snake TUI"),
-                ftxui::filler(),
+                filler(),
                 cell(std::format("Score: {}", score()))
             }),
-            ftxui::canvas(toCanvas()) | ftxui::center,
-            ftxui::separatorEmpty()
-        }) | ftxui::hcenter;
+            canvas(toCanvas()) | center,
+            separatorEmpty()
+        }) | hcenter;
     })};
 
-    auto component{ftxui::CatchEvent(renderer, [&](ftxui::Event event) {
-        if (event == ftxui::Event::Character('q')) {
+    auto component{CatchEvent(renderer, [&](ftxui::Event event) {
+        if (event == Event::Character('q') || event == Event::Escape) {
             screen.ExitLoopClosure()();
             return true;
         }
+
+        if (event == Event::Character('w') || event == Event::ArrowUp)
+            return snake_turn(Snake::Facing::NORTH);
+        if (event == Event::Character('a') || event == Event::ArrowLeft)
+            return snake_turn(Snake::Facing::WEST);
+        if (event == Event::Character('s') || event == Event::ArrowDown)
+            return snake_turn(Snake::Facing::SOUTH);
+        if (event == Event::Character('d') || event == Event::ArrowRight)
+            return snake_turn(Snake::Facing::EAST);
+
         return false;
     })};
 
-    ftxui::Loop loop(&screen, component);
+    Loop loop(&screen, component);
 
     while (!loop.HasQuitted()) {
         snake_move();
 
         loop.RunOnce();
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000) / FPS);
+        std::this_thread::sleep_for(std::chrono::milliseconds(350));
         screen.RequestAnimationFrame();
 
         if (hasLost())
             break;
     }
 }
-
 
 bool Game::hasWon() const { return score_ >= grid_.tiles(); }
 
@@ -61,10 +72,7 @@ bool Game::hasLost() const { return !snake_.inGrid(grid_); }
 int Game::score() const { return score_; }
 
 ftxui::Canvas Game::toCanvas() const {
-    const auto cva_w{grid_.rows() * cell_sz};
-    const auto cva_h{grid_.cols() * cell_sz};
-
-    auto cva{ftxui::Canvas(cva_w, cva_h)};
+    auto cva{ftxui::Canvas(grid_.rows() * cell_sz, grid_.cols() * cell_sz)};
 
     grid_.toCanvas(cva);
     snake_.toCanvas(cva);
@@ -78,8 +86,9 @@ void Game::snake_move() {
     snake_.move();
 }
 
-void Game::snake_turn(Snake::Facing turn) {
-    // implement soon!
+bool Game::snake_turn(Snake::Facing turn) {
+    snake_.turn(turn);
+    return true; // return true for CatchEvent.
 }
 
 void Game::dramatic_loss(ftxui::Canvas& cva) const {
