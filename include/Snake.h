@@ -25,7 +25,7 @@ public:
     void turn(Facing turn);
 private:
     Pos2d& head();
-    void move_part(const Pos2d& pos);
+    void move_part(Pos2d& pos);
 
     // initialise with snake at middle of grid facing north
     std::deque<Pos2d> positions_{{Grid::rows() / 2, Grid::cols() / 2, NORTH}};

@@ -40,7 +40,7 @@ void Snake::move() {
     // move_part(tail());
 }
 
-void Snake::move_part(const Pos2d& pos) {
+void Snake::move_part(Pos2d& pos) {
     switch (pos.facing) {
     case NORTH:
         pos.y--; break;
