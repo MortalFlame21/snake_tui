@@ -22,10 +22,14 @@ public:
     void grow();
     bool inGrid(const Grid& grid) const;
     void move();
+    void turn(Facing turn);
 private:
-    void move_part(Pos2d& pos);
+    Pos2d& head();
+    void move_part(const Pos2d& pos);
 
     // initialise with snake at middle of grid facing north
     std::deque<Pos2d> positions_{{Grid::rows() / 2, Grid::cols() / 2, NORTH}};
+    // the rest of the body follows the head turns positions,
+    // basically a stack of all previous head positions.
     std::deque<Pos2d> turn_positions{};
 };

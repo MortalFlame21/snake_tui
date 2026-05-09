@@ -20,9 +20,9 @@ ftxui::Canvas& Snake::toCanvas(ftxui::Canvas& cva) const {
     return cva;
 }
 
-Snake::Pos2d Snake::head() const {
-    return positions_.front();
-}
+Snake::Pos2d Snake::head() const { return positions_.front(); }
+
+Snake::Pos2d& Snake::head() { return positions_.front(); }
 
 void Snake::grow() {
     // grow depending on facing direction
@@ -35,12 +35,12 @@ bool Snake::inGrid(const Grid& grid) const {
 }
 
 void Snake::move() {
-    for (auto& p : positions_) {
-        move_part(p);
-    }
+    // to create the illusion of movement simply move head and tail
+    move_part(head());
+    // move_part(tail());
 }
 
-void Snake::move_part(Pos2d& pos) {
+void Snake::move_part(const Pos2d& pos) {
     switch (pos.facing) {
     case NORTH:
         pos.y--; break;
@@ -54,3 +54,5 @@ void Snake::move_part(Pos2d& pos) {
         break;
     }
 }
+
+void Snake::turn(const Facing turn) { head().facing = turn; }
