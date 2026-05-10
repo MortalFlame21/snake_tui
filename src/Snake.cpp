@@ -24,7 +24,21 @@ Snake::Pos2d Snake::head() const { return positions_.front(); }
 Snake::Pos2d& Snake::head() { return positions_.front(); }
 
 void Snake::grow() {
-    // grow depending on facing direction
+    positions_.push_back([&]() -> Snake::Pos2d {
+        auto h{head()};
+        switch (h.facing) {
+        case NORTH:
+            return {h.x, h.y + 1, NORTH};
+        case SOUTH:
+            return {h.x, h.y - 1, SOUTH};
+        case EAST:
+            return {h.x - 1, h.y, EAST};
+        case WEST:
+            return {h.x + 1, h.y, WEST};
+        default:
+            return {0, 0, NORTH};
+        }
+    }());
 }
 
 bool Snake::inGrid(const Grid& grid) const {
