@@ -40,13 +40,17 @@ void Game::run() {
         }
 
         if (event == Event::Character('w') || event == Event::ArrowUp)
-            return snake_turn(Snake::Facing::NORTH);
+            if (snake_.facing() != Snake::Facing::SOUTH)
+                return snake_turn(Snake::Facing::NORTH);
         if (event == Event::Character('a') || event == Event::ArrowLeft)
-            return snake_turn(Snake::Facing::WEST);
+            if (snake_.facing() != Snake::Facing::EAST)
+                return snake_turn(Snake::Facing::WEST);
         if (event == Event::Character('s') || event == Event::ArrowDown)
-            return snake_turn(Snake::Facing::SOUTH);
+            if (snake_.facing() != Snake::Facing::NORTH)
+                return snake_turn(Snake::Facing::SOUTH);
         if (event == Event::Character('d') || event == Event::ArrowRight)
-            return snake_turn(Snake::Facing::EAST);
+            if (snake_.facing() != Snake::Facing::WEST)
+                return snake_turn(Snake::Facing::EAST);
 
         return false;
     })};
@@ -54,45 +58,55 @@ void Game::run() {
     Loop loop(&screen, component);
 
     while (!loop.HasQuitted()) {
+        snake_eat();
         snake_move();
 
         loop.RunOnce();
         std::this_thread::sleep_for(std::chrono::milliseconds(350));
         screen.RequestAnimationFrame();
 
-        if (hasLost())
-            break;
+        if (hasLost() || hasWon())
+            screen.ExitLoopClosure()();
     }
 }
 
 bool Game::hasWon() const { return score_ >= grid_.tiles(); }
 
-bool Game::hasLost() const { return !snake_.inGrid(grid_); }
+bool Game::hasLost() const { return !snake_.inGrid(grid_) || snake_.isHeadCollision(); }
 
 int Game::score() const { return score_; }
 
 ftxui::Canvas Game::toCanvas() const {
-    auto cva{ftxui::Canvas(grid_.rows() * cell_sz, grid_.cols() * cell_sz)};
+    auto cva{ftxui::Canvas(grid_.rows() * Grid::cell_sz, grid_.cols() * Grid::cell_sz)};
 
     grid_.toCanvas(cva);
     snake_.toCanvas(cva);
+    food_.toCanvas(cva);
 
-    if (hasLost()) dramatic_loss(cva);
+    if (hasLost() || hasWon()) dramatic_wl(cva);
 
     return cva;
 }
 
-void Game::snake_move() {
-    snake_.move();
-}
+void Game::snake_move() { snake_.move(); }
 
 bool Game::snake_turn(Snake::Facing turn) {
     snake_.turn(turn);
     return true; // return true for CatchEvent.
 }
 
-void Game::dramatic_loss(ftxui::Canvas& cva) const {
-    auto msg{std::format("You lose! Score: {}", score_)};
+void Game::dramatic_wl(ftxui::Canvas& cva) const {
+    auto msg{std::format("You {}! Score: {}", (hasLost() ? "lose" : "win"), score_)};
     for (int i{}; i < cva.height(); ++i)
-        cva.DrawText(cva.width() / 2 - msg.length(), i + 1, msg, ftxui::Color::Red1);
+        cva.DrawText(cva.width() / 2 - msg.length(),
+            i + 1, msg, (hasLost() ? ftxui::Color::Red1 : ftxui::Color::Green3));
+}
+
+void Game::snake_eat() {
+    if (snake_.isEating(food_)) {
+        while (snake_.isIntersect({food_.x(), food_.y()}))
+            food_.move();
+        snake_.grow();
+        ++score_;
+    }
 }
