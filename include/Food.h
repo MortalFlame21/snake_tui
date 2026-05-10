@@ -34,6 +34,7 @@ public:
         }
     }
 private:
+    // don't care if spawns inside snake, we just eat it!
     int x_{s_dist(s_mt)};
     int y_{s_dist(s_mt)};
 };
