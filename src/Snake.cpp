@@ -25,16 +25,16 @@ Snake::Pos2d& Snake::head() { return positions_.front(); }
 
 void Snake::grow() {
     positions_.push_back([&]() -> Snake::Pos2d {
-        auto h{head()};
-        switch (h.facing) {
+        auto t{tail()};
+        switch (t.facing) {
         case NORTH:
-            return {h.x, h.y + 1, NORTH};
+            return {t.x, t.y + 1, NORTH};
         case SOUTH:
-            return {h.x, h.y - 1, SOUTH};
+            return {t.x, t.y - 1, SOUTH};
         case EAST:
-            return {h.x - 1, h.y, EAST};
+            return {t.x - 1, t.y, EAST};
         case WEST:
-            return {h.x + 1, h.y, WEST};
+            return {t.x + 1, t.y, WEST};
         default:
             return {0, 0, NORTH};
         }
@@ -48,9 +48,23 @@ bool Snake::inGrid(const Grid& grid) const {
 }
 
 void Snake::move() {
-    // to create the illusion of movement simply move head and tail
-    move_part(head());
-    // move_part(tail());
+    // to create the illusion of movement simply move head and remove tail
+    positions_.push_front([&]() -> Snake::Pos2d {
+        auto h{head()};
+        switch (h.facing) {
+        case NORTH:
+            return {h.x, h.y - 1, NORTH};
+        case SOUTH:
+            return {h.x, h.y + 1, SOUTH};
+        case EAST:
+            return {h.x + 1, h.y, EAST};
+        case WEST:
+            return {h.x - 1, h.y, WEST};
+        default:
+            return {0, 0, NORTH};
+        }
+    }());
+    positions_.pop_back();
 }
 
 void Snake::move_part(Pos2d& pos) {
@@ -74,3 +88,5 @@ bool Snake::isEating(const Food food) const {
     auto h(head());
     return (h.x == food.x()) && (h.y == food.y());
 }
+
+Snake::Pos2d& Snake::tail() { return positions_.back(); }

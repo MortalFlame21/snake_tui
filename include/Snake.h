@@ -27,11 +27,9 @@ public:
     bool isEating(const Food food) const;
 private:
     Pos2d& head();
+    Pos2d& tail();
     void move_part(Pos2d& pos);
 
     // initialise with snake at middle of grid facing north
     std::deque<Pos2d> positions_{{Grid::rows() / 2, Grid::cols() / 2, NORTH}};
-    // the rest of the body follows the head turns positions,
-    // basically a stack of all previous head positions.
-    std::deque<Pos2d> turn_positions{};
 };
