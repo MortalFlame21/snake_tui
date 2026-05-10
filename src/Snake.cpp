@@ -1,5 +1,7 @@
 #include "Snake.h"
 
+#include <ranges>
+
 #include <ftxui/dom/canvas.hpp>
 
 #include "Grid.h"
@@ -77,3 +79,9 @@ bool Snake::isEating(const Food food) const {
 Snake::Pos2d& Snake::tail() { return positions_.back(); }
 
 Snake::Facing Snake::facing() const { return facing_; }
+
+bool Snake::isCollision() const {
+    auto pred{[&](const auto& p){ return head() == p; }};
+    return std::ranges::find_if(positions_.begin() + 1,
+                                positions_.end(), pred) != positions_.end();
+}
