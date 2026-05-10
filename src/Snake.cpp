@@ -80,8 +80,13 @@ Snake::Pos2d& Snake::tail() { return positions_.back(); }
 
 Snake::Facing Snake::facing() const { return facing_; }
 
-bool Snake::isCollision() const {
+bool Snake::isHeadCollision() const {
     auto pred{[&](const auto& p){ return head() == p; }};
     return std::ranges::find_if(positions_.begin() + 1,
                                 positions_.end(), pred) != positions_.end();
+}
+
+bool Snake::isIntersect(const Pos2d& pos) const {
+    auto pred{[&](const auto& p){ return pos == p; }};
+    return std::ranges::find_if(positions_, pred) != positions_.end();
 }

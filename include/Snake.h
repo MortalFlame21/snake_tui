@@ -13,7 +13,9 @@ public:
     struct Pos2d {
         int x{};
         int y{};
-        bool operator==(const Pos2d& o) { return (x == o.x) && (y == o.y); }
+        bool operator==(const Pos2d& o) const {
+            return (x == o.x) && (y == o.y);
+        }
     };
 
     Snake() = default;
@@ -25,7 +27,8 @@ public:
     void turn(Facing turn);
     Snake::Facing facing() const;
     bool isEating(const Food food) const;
-    bool isCollision() const;
+    bool isHeadCollision() const;
+    bool isIntersect(const Pos2d& pos) const;
 private:
     Pos2d head() const;
     Pos2d& head();
