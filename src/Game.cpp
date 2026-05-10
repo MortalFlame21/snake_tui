@@ -72,7 +72,7 @@ void Game::run() {
 
 bool Game::hasWon() const { return score_ >= grid_.tiles(); }
 
-bool Game::hasLost() const { return !snake_.inGrid(grid_); }
+bool Game::hasLost() const { return !snake_.inGrid(grid_) || snake_.isCollision(); }
 
 int Game::score() const { return score_; }
 
