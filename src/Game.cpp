@@ -58,8 +58,8 @@ void Game::run() {
     Loop loop(&screen, component);
 
     while (!loop.HasQuitted()) {
-        snake_move();
         snake_eat();
+        snake_move();
 
         loop.RunOnce();
         std::this_thread::sleep_for(std::chrono::milliseconds(350));
@@ -72,7 +72,7 @@ void Game::run() {
 
 bool Game::hasWon() const { return score_ >= grid_.tiles(); }
 
-bool Game::hasLost() const { return !snake_.inGrid(grid_) || snake_.isCollision(); }
+bool Game::hasLost() const { return !snake_.inGrid(grid_) || snake_.isHeadCollision(); }
 
 int Game::score() const { return score_; }
 
@@ -104,7 +104,8 @@ void Game::dramatic_wl(ftxui::Canvas& cva) const {
 
 void Game::snake_eat() {
     if (snake_.isEating(food_)) {
-        food_.move();
+        while (snake_.isIntersect({food_.x(), food_.y()}))
+            food_.move();
         snake_.grow();
         ++score_;
     }
