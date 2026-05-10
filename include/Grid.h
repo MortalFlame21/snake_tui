@@ -7,6 +7,8 @@
 
 class Grid {
 public:
+    inline static constexpr size_t cell_sz{10};
+
     Grid() = default;
 
     static constexpr int rows() { return rows_; }
