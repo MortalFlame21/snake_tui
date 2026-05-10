@@ -5,11 +5,10 @@
 
 #include "Grid.h"
 #include "Snake.h"
+#include "Food.h"
 
 class Game {
 public:
-    inline static constexpr size_t cell_sz{10};
-
     Game() = default;
 
     void run();
@@ -21,8 +20,10 @@ private:
     void snake_move();
     bool snake_turn(Snake::Facing turn);
     void dramatic_loss(ftxui::Canvas& cva) const;
+    void snake_eat();
 
     Grid grid_{};
     Snake snake_{};
+    Food food_{};
     int score_{};
 };

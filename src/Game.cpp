@@ -55,6 +55,7 @@ void Game::run() {
 
     while (!loop.HasQuitted()) {
         snake_move();
+        snake_eat();
 
         loop.RunOnce();
         std::this_thread::sleep_for(std::chrono::milliseconds(350));
@@ -72,19 +73,18 @@ bool Game::hasLost() const { return !snake_.inGrid(grid_); }
 int Game::score() const { return score_; }
 
 ftxui::Canvas Game::toCanvas() const {
-    auto cva{ftxui::Canvas(grid_.rows() * cell_sz, grid_.cols() * cell_sz)};
+    auto cva{ftxui::Canvas(grid_.rows() * Grid::cell_sz, grid_.cols() * Grid::cell_sz)};
 
     grid_.toCanvas(cva);
     snake_.toCanvas(cva);
+    food_.toCanvas(cva);
 
     if (hasLost()) dramatic_loss(cva);
 
     return cva;
 }
 
-void Game::snake_move() {
-    snake_.move();
-}
+void Game::snake_move() { snake_.move(); }
 
 bool Game::snake_turn(Snake::Facing turn) {
     snake_.turn(turn);
@@ -95,4 +95,11 @@ void Game::dramatic_loss(ftxui::Canvas& cva) const {
     auto msg{std::format("You lose! Score: {}", score_)};
     for (int i{}; i < cva.height(); ++i)
         cva.DrawText(cva.width() / 2 - msg.length(), i + 1, msg, ftxui::Color::Red1);
+}
+
+void Game::snake_eat() {
+    // if (snake_.eat(food_)) {
+    //     food_.move();
+    //     ++score_;
+    // }
 }
