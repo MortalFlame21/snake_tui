@@ -9,7 +9,6 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 add_executable(snake_tui
   src/main.cpp
   src/Game.cpp
-  src/Grid.cpp
   src/Snake.cpp
 )
 
