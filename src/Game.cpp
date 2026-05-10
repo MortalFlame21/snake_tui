@@ -40,13 +40,17 @@ void Game::run() {
         }
 
         if (event == Event::Character('w') || event == Event::ArrowUp)
-            return snake_turn(Snake::Facing::NORTH);
+            if (snake_.facing() != Snake::Facing::SOUTH)
+                return snake_turn(Snake::Facing::NORTH);
         if (event == Event::Character('a') || event == Event::ArrowLeft)
-            return snake_turn(Snake::Facing::WEST);
+            if (snake_.facing() != Snake::Facing::EAST)
+                return snake_turn(Snake::Facing::WEST);
         if (event == Event::Character('s') || event == Event::ArrowDown)
-            return snake_turn(Snake::Facing::SOUTH);
+            if (snake_.facing() != Snake::Facing::NORTH)
+                return snake_turn(Snake::Facing::SOUTH);
         if (event == Event::Character('d') || event == Event::ArrowRight)
-            return snake_turn(Snake::Facing::EAST);
+            if (snake_.facing() != Snake::Facing::WEST)
+                return snake_turn(Snake::Facing::EAST);
 
         return false;
     })};
