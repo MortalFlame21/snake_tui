@@ -19,7 +19,7 @@ private:
     ftxui::Canvas toCanvas() const;
     void snake_move();
     bool snake_turn(Snake::Facing turn);
-    void dramatic_loss(ftxui::Canvas& cva) const;
+    void dramatic_wl(ftxui::Canvas& cva) const;
     void snake_eat();
 
     Grid grid_{};

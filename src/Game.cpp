@@ -65,8 +65,8 @@ void Game::run() {
         std::this_thread::sleep_for(std::chrono::milliseconds(350));
         screen.RequestAnimationFrame();
 
-        if (hasLost())
-            break;
+        if (hasLost() || hasWon())
+            screen.ExitLoopClosure()();
     }
 }
 
@@ -83,7 +83,7 @@ ftxui::Canvas Game::toCanvas() const {
     snake_.toCanvas(cva);
     food_.toCanvas(cva);
 
-    if (hasLost()) dramatic_loss(cva);
+    if (hasLost() || hasWon()) dramatic_wl(cva);
 
     return cva;
 }
@@ -95,10 +95,11 @@ bool Game::snake_turn(Snake::Facing turn) {
     return true; // return true for CatchEvent.
 }
 
-void Game::dramatic_loss(ftxui::Canvas& cva) const {
-    auto msg{std::format("You lose! Score: {}", score_)};
+void Game::dramatic_wl(ftxui::Canvas& cva) const {
+    auto msg{std::format("You {}! Score: {}", (hasLost() ? "lose" : "win"), score_)};
     for (int i{}; i < cva.height(); ++i)
-        cva.DrawText(cva.width() / 2 - msg.length(), i + 1, msg, ftxui::Color::Red1);
+        cva.DrawText(cva.width() / 2 - msg.length(),
+            i + 1, msg, (hasLost() ? ftxui::Color::Red1 : ftxui::Color::Green3));
 }
 
 void Game::snake_eat() {
