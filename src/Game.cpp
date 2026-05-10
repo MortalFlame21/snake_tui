@@ -98,8 +98,8 @@ void Game::dramatic_loss(ftxui::Canvas& cva) const {
 }
 
 void Game::snake_eat() {
-    // if (snake_.eat(food_)) {
-    //     food_.move();
-    //     ++score_;
-    // }
+    if (snake_.isEating(food_)) {
+        food_.move();
+        ++score_;
+    }
 }
