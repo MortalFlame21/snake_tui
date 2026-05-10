@@ -13,23 +13,23 @@ public:
     struct Pos2d {
         int x{};
         int y{};
-        Facing facing;
     };
 
     Snake() = default;
 
     ftxui::Canvas& toCanvas(ftxui::Canvas& cva) const;
-    Pos2d head() const;
     void grow();
     bool inGrid(const Grid& grid) const;
     void move();
     void turn(Facing turn);
+    Snake::Facing facing() const;
     bool isEating(const Food food) const;
 private:
+    Pos2d head() const;
     Pos2d& head();
     Pos2d& tail();
-    void move_part(Pos2d& pos);
 
     // initialise with snake at middle of grid facing north
-    std::deque<Pos2d> positions_{{Grid::rows() / 2, Grid::cols() / 2, NORTH}};
+    std::deque<Pos2d> positions_{{Grid::rows() / 2, Grid::cols() / 2}};
+    Facing facing_{NORTH};
 };

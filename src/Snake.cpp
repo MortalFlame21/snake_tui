@@ -26,17 +26,17 @@ Snake::Pos2d& Snake::head() { return positions_.front(); }
 void Snake::grow() {
     positions_.push_back([&]() -> Snake::Pos2d {
         auto t{tail()};
-        switch (t.facing) {
+        switch (facing_) {
         case NORTH:
-            return {t.x, t.y + 1, NORTH};
+            return {t.x, t.y + 1};
         case SOUTH:
-            return {t.x, t.y - 1, SOUTH};
+            return {t.x, t.y - 1};
         case EAST:
-            return {t.x - 1, t.y, EAST};
+            return {t.x - 1, t.y};
         case WEST:
-            return {t.x + 1, t.y, WEST};
+            return {t.x + 1, t.y};
         default:
-            return {0, 0, NORTH};
+            return {0, 0};
         }
     }());
 }
@@ -51,38 +51,23 @@ void Snake::move() {
     // to create the illusion of movement simply move head and remove tail
     positions_.push_front([&]() -> Snake::Pos2d {
         auto h{head()};
-        switch (h.facing) {
+        switch (facing_) {
         case NORTH:
-            return {h.x, h.y - 1, NORTH};
+            return {h.x, h.y - 1};
         case SOUTH:
-            return {h.x, h.y + 1, SOUTH};
+            return {h.x, h.y + 1};
         case EAST:
-            return {h.x + 1, h.y, EAST};
+            return {h.x + 1, h.y};
         case WEST:
-            return {h.x - 1, h.y, WEST};
+            return {h.x - 1, h.y};
         default:
-            return {0, 0, NORTH};
+            return {0, 0};
         }
     }());
     positions_.pop_back();
 }
 
-void Snake::move_part(Pos2d& pos) {
-    switch (pos.facing) {
-    case NORTH:
-        pos.y--; break;
-    case SOUTH:
-        pos.y++; break;
-    case EAST:
-        pos.x++; break;
-    case WEST:
-        pos.x--; break;
-    default:
-        break;
-    }
-}
-
-void Snake::turn(const Facing turn) { head().facing = turn; }
+void Snake::turn(const Facing turn) { facing_ = turn; }
 
 bool Snake::isEating(const Food food) const {
     auto h(head());
@@ -90,3 +75,5 @@ bool Snake::isEating(const Food food) const {
 }
 
 Snake::Pos2d& Snake::tail() { return positions_.back(); }
+
+Snake::Facing Snake::facing() const { return facing_; }
