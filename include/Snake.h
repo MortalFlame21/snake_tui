@@ -20,7 +20,7 @@ public:
 
     Snake() = default;
 
-    ftxui::Canvas& toCanvas(ftxui::Canvas& cva) const;
+    void toCanvas(ftxui::Canvas& cva) const;
     void grow();
     bool inGrid(const Grid& grid) const;
     void move();
