@@ -1,3 +1,5 @@
+#pragma once
+
 #include <random>
 
 #include <ftxui/dom/canvas.hpp>
