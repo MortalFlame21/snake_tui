@@ -5,6 +5,7 @@
 #include <ftxui/dom/canvas.hpp>
 
 #include "Grid.h"
+#include "Food.h"
 
 class Snake {
 public:
@@ -23,6 +24,7 @@ public:
     bool inGrid(const Grid& grid) const;
     void move();
     void turn(Facing turn);
+    bool isEating(const Food food) const;
 private:
     Pos2d& head();
     void move_part(Pos2d& pos);

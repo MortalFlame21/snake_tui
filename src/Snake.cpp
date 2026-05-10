@@ -55,3 +55,8 @@ void Snake::move_part(Pos2d& pos) {
 }
 
 void Snake::turn(const Facing turn) { head().facing = turn; }
+
+bool Snake::isEating(const Food food) const {
+    auto h(head());
+    return (h.x == food.x()) && (h.y == food.y());
+}
