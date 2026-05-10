@@ -14,8 +14,8 @@ class Food {
 public:
     Food() = default;
 
-    int x() { return x_; }
-    int y() { return y_; }
+    int x() const { return x_; }
+    int y() const { return y_; }
 
     void move() {
         x_ = s_dist(s_mt);
