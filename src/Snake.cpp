@@ -3,16 +3,15 @@
 #include <ftxui/dom/canvas.hpp>
 
 #include "Grid.h"
-#include "Game.h"
 
 ftxui::Canvas& Snake::toCanvas(ftxui::Canvas& cva) const {
     for (auto p : positions_) {
         // fill square with body
-        for (size_t dy{}; dy < Game::cell_sz; ++dy) {
-            for (size_t dx{}; dx < Game::cell_sz; ++dx) {
+        for (size_t dy{}; dy < Grid::cell_sz; ++dy) {
+            for (size_t dx{}; dx < Grid::cell_sz; ++dx) {
                 constexpr auto color{ftxui::Color::Green1};
-                cva.DrawBlock(p.x * Game::cell_sz + dx,
-                              p.y * Game::cell_sz + dy, true, color);
+                cva.DrawBlock(p.x * Grid::cell_sz + dx,
+                              p.y * Grid::cell_sz + dy, true, color);
             }
         }
     }
