@@ -7,7 +7,8 @@
 
 class Grid {
 public:
-    inline static constexpr size_t cell_sz{10};
+    // should be a multiple of 2 and 4, as a block is (2 * 4 for fxtui)
+    inline static constexpr size_t cell_sz{12};
 
     Grid() = default;
 
@@ -16,7 +17,8 @@ public:
     static constexpr int tiles() { return rows_ * cols_; };
 
     void toCanvas(ftxui::Canvas& cva) const {
-        // output a 10 x 10 square, or 4 x 2 printed blocks
+        // outputs grid width of row_ * col_ * cell_sz_w (2 for fxtui)
+        // outputs grid height of row_ * col_ * cell_sz_h (4 for fxtui)
         for (size_t r{}; r < rows_; ++r) {
             for (size_t c{}; c < cols_; ++c) {
                 auto light{(r + c) % 2 == 0};
