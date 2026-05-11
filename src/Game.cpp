@@ -59,14 +59,16 @@ void Game::run() {
 
     while (!loop.HasQuitted()) {
         snake_eat();
-        snake_move();
+        if (!hasWon()) snake_move();
 
         loop.RunOnce();
         std::this_thread::sleep_for(std::chrono::milliseconds(350));
         screen.RequestAnimationFrame();
 
-        if (hasLost() || hasWon())
+        if (hasLost() || hasWon()) {
             screen.ExitLoopClosure()();
+            break;
+        }
     }
 }
 
@@ -104,9 +106,10 @@ void Game::dramatic_wl(ftxui::Canvas& cva) const {
 
 void Game::snake_eat() {
     if (snake_.isEating(food_)) {
+        ++score_;
+        if (hasWon()) return; // following will continue looping
         while (snake_.isIntersect({food_.x(), food_.y()}))
             food_.move();
         snake_.grow();
-        ++score_;
     }
 }
