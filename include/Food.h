@@ -10,7 +10,8 @@ inline static std::random_device s_rd{};
 inline static std::seed_seq s_ss{s_rd(), s_rd(), s_rd(), s_rd(),
                                  s_rd(), s_rd(), s_rd(), s_rd()};
 inline static std::mt19937 s_mt{s_ss};
-inline static std::uniform_int_distribution s_dist{0, Grid::cols() - 1};
+inline static std::uniform_int_distribution s_dist_x{0, Grid::rows() - 1};
+inline static std::uniform_int_distribution s_dist_y{0, Grid::cols() - 1};
 
 class Food {
 public:
@@ -20,8 +21,8 @@ public:
     int y() const { return y_; }
 
     void move() {
-        x_ = s_dist(s_mt);
-        y_ = s_dist(s_mt);
+        x_ = s_dist_x(s_mt);
+        y_ = s_dist_y(s_mt);
     }
 
     void toCanvas(ftxui::Canvas& cva) const {
@@ -35,6 +36,6 @@ public:
     }
 private:
     // don't care if spawns inside snake, we just eat it!
-    int x_{s_dist(s_mt)};
-    int y_{s_dist(s_mt)};
+    int x_{s_dist_x(s_mt)};
+    int y_{s_dist_y(s_mt)};
 };
