@@ -6,7 +6,7 @@
 
 #include "Grid.h"
 
-ftxui::Canvas& Snake::toCanvas(ftxui::Canvas& cva) const {
+void Snake::toCanvas(ftxui::Canvas& cva) const {
     for (auto p : positions_) {
         // fill square with body
         for (size_t dy{}; dy < Grid::cell_sz; ++dy) {
@@ -17,8 +17,6 @@ ftxui::Canvas& Snake::toCanvas(ftxui::Canvas& cva) const {
             }
         }
     }
-
-    return cva;
 }
 
 Snake::Pos2d Snake::head() const { return positions_.front(); }
